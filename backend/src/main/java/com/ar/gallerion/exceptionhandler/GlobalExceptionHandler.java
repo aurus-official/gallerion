@@ -14,10 +14,23 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import com.ar.gallerion.exception.ApiRequestException;
+import com.ar.gallerion.exception.IllegalResourceAccessException;
 import com.ar.gallerion.exceptionbody.ApiRequestExceptionBody;
+import com.ar.gallerion.exceptionbody.IllegalResourceAccessExceptionBody;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(IllegalResourceAccessException.class)
+    public ResponseEntity<IllegalResourceAccessExceptionBody> handleIllegalResourceAccessException(Exception e) {
+        IllegalResourceAccessExceptionBody illegalResourceAccessExceptionBody = new IllegalResourceAccessExceptionBody(
+                e.getMessage(),
+                ZonedDateTime.now(ZoneId.of("Z")),
+                HttpStatus.UNAUTHORIZED);
+
+        return new ResponseEntity<IllegalResourceAccessExceptionBody>(illegalResourceAccessExceptionBody,
+                HttpStatus.UNAUTHORIZED);
+    }
 
     @ExceptionHandler(value = { ApiRequestException.class, MultipartException.class,
             MissingServletRequestPartException.class })
@@ -27,7 +40,7 @@ public class GlobalExceptionHandler {
                 ZonedDateTime.now(ZoneId.of("Z")),
                 HttpStatus.BAD_REQUEST);
 
-        return ResponseEntity.badRequest().body(apiRequestExceptionBody);
+        return new ResponseEntity<ApiRequestExceptionBody>(apiRequestExceptionBody, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -36,6 +49,6 @@ public class GlobalExceptionHandler {
         e.getBindingResult().getFieldErrors().forEach(err -> {
             errorFieldMap.put(err.getField(), err.getDefaultMessage());
         });
-        return ResponseEntity.badRequest().body(errorFieldMap);
+        return new ResponseEntity<Map<String, String>>(errorFieldMap, HttpStatus.BAD_REQUEST);
     }
 }

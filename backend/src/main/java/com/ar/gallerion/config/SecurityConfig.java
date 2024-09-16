@@ -35,7 +35,8 @@ class SecurityConfig {
                         .requestMatchers("POST", "/v1/user").permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(setupAuthenticationProvider())
-                .httpBasic(basic -> basic.securityContextRepository(new HttpSessionSecurityContextRepository()));
+                .httpBasic(basic -> basic.securityContextRepository(new HttpSessionSecurityContextRepository()))
+                .logout(logout -> logout.logoutUrl("/v1/user"));
         return http.build();
     }
 

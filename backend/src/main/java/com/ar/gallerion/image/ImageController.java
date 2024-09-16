@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,26 +28,21 @@ class ImageController {
         this.imageService = imageService;
     }
 
-    @GetMapping(path = "/test")
-    ResponseEntity<String> testing() {
-        return ResponseEntity.ok().body("TESTING");
-    }
-
     @GetMapping(path = "/{username}")
-    ResponseEntity<List<ImageModel>> getFilesOnUsername(@PathVariable(name = "username") String username) {
-        List<ImageModel> files = imageService.getAllImages();
+    ResponseEntity<List<ImageModel>> getImageOnUsername(@PathVariable(name = "username") String username,
+            Authentication authentication) {
+        List<ImageModel> files = imageService.getAllImages(username, authentication.getName());
         return ResponseEntity.ok().body(files);
     }
 
     @PostMapping(path = "/{username}")
     ResponseEntity<String> uploadFilesOnUsername(@PathVariable(name = "username") String username,
-            @RequestParam MultipartFile[] images) throws MultipartException {
+            @RequestParam MultipartFile[] images, Authentication authentication) throws MultipartException {
         try {
-            imageService.isSuccessfulUploadImages(images, username);
+            imageService.isSuccessfulUploadImages(images, username, authentication.getName());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return ResponseEntity.ok().body("IT WORKED, PROBABLY!");
     }
 }

@@ -7,8 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
-@Entity
+@Entity(name = "images")
 @Table(name = "images")
 class ImageModel {
     @Id
@@ -17,6 +18,26 @@ class ImageModel {
     private String name;
     private String fileUrl;
     private LocalDateTime timestamp;
+    private String author;
+
+    @Transient
+    private byte[] imageBytes;
+
+    public void setImageBytes(byte[] imageBytes) {
+        this.imageBytes = imageBytes;
+    }
+
+    public byte[] getImageBytes() {
+        return imageBytes;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
     public String getName() {
         return name;

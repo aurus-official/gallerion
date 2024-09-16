@@ -8,9 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ar.gallerion.exception.IllegalResourceAccessException;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,31 +26,43 @@ class ImageService {
     @Autowired
     ImageService(ImageRepository imageRepository) {
         this.imageRepository = imageRepository;
-    }
-
-    List<ImageModel> getAllImages() {
-        return StreamSupport
-                .stream(imageRepository.findAll().spliterator(), false)
-                .collect(Collectors.toList());
-    }
-
-    boolean isSuccessfulUploadImages(MultipartFile[] images, String username) throws IOException {
         this.setupCurrentWorkingDirectory();
+    }
+
+    List<ImageModel> getAllImages(String username, String authenticatedUser) {
+
+        if (!validateAuthenticatedUser(username, authenticatedUser)) {
+            throw new IllegalResourceAccessException("RESOURCES NOT ALLOWED TO ACCESS!");
+        }
+
+        List<ImageModel> images = StreamSupport
+                .stream(imageRepository.getAllImagesByUsername(username).spliterator(), false)
+                .collect(Collectors.toList());
+
+        images.forEach(image -> {
+            try {
+                image.setImageBytes(
+                        Files.readAllBytes(Paths.get(CURRENT_WORKING_DIRECTORY.concat(image.getFileUrl()))));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        return images;
+    }
+
+    boolean isSuccessfulUploadImages(MultipartFile[] images, String username, String authenticatedUser)
+            throws IOException {
+
+        if (!validateAuthenticatedUser(username, authenticatedUser)) {
+            throw new IllegalResourceAccessException("RESOURCES NOT ALLOWED TO ACCESS!");
+        }
 
         String usernameImagesDirectory = CURRENT_WORKING_DIRECTORY.concat(username);
 
         if (!Files.isDirectory(Paths.get(usernameImagesDirectory))) {
             Files.createDirectory(Paths.get(usernameImagesDirectory));
         }
-        System.out.println(String.format("%s DIRECTORY ALREADY EXISTS!", username));
-
-        // for (MultipartFile image : images) {
-        // Path filePath = Files
-        // .createFile(Paths
-        // .get(usernameImagesDirectory.concat(String.format("/%s",
-        // image.getOriginalFilename()))));
-        // image.transferTo(filePath);
-        // }
 
         Stream.of(images).forEach(image -> {
             try {
@@ -65,18 +80,29 @@ class ImageService {
                                 .get(usernameImagesDirectory
                                         .concat(String.format("/%s", image.getOriginalFilename()))));
 
-                System.out.println(Files.exists(createdFilePath));
-
-                if (Files.exists(createdFilePath)) {
-                    return;
-                }
-
                 image.transferTo(createdFilePath);
+
+                ImageModel tempModel = new ImageModel();
+                tempModel.setName(image.getOriginalFilename());
+                tempModel.setFileUrl(String.format("%s/%s", username, image.getOriginalFilename()));
+                tempModel.setTimestamp(LocalDateTime.now());
+                tempModel.setAuthor(username);
+
+                imageRepository.save(tempModel);
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
+
+        return true;
+    }
+
+    private boolean validateAuthenticatedUser(String username, String authenticatedUsername) {
+        if (username.compareTo(authenticatedUsername) != 0) {
+            System.out.println("USERNAME IS NOT MATCHED WITH AUTHENTICATED USER!");
+            return false;
+        }
 
         return true;
     }
