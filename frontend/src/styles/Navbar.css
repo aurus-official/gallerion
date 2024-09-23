@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Jersey+25&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Jersey+15&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Jersey+20&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    background-color: rgba(18, 18, 18, 1);
+}
+
+.navbar-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(96, 84, 84, 0.12);
+    padding: 2.2em 5em;
+    justify-content: space-between;
+}
+
+.navbar-container > li {
+    list-style: none;
+    background-color: transparent;
+}
+
+.searchbar-container {
+    width: 60%;
+    position: relative;
+}
+
+.searchbar-container::before {
+    content: url("./../assets/search.svg");
+    position: absolute;
+    top: 50%;
+    left: 1.25em;
+    transform: translateY(-49%) scale(0.9);
+    text-align: center;
+}
+
+.navbar-searchbar {
+    background-color: rgba(96, 84, 84, 0.4);
+    outline: none;
+    color: white;
+    border: none;
+    border-radius: 25em;
+    padding: 0.6em 1em 0.6em 3.5em;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1.1rem;
+    font-family: "Jersey 25", sans-serif;
+}
+
+.navbar-searchbar::placeholder {
+    font-family: "Jersey 25", sans-serif;
+}
+
+.navbar-userimg {
+    background-color: transparent;
+}
+
+.navbar-logo {
+}
