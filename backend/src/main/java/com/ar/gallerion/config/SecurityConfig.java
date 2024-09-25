@@ -36,7 +36,7 @@ class SecurityConfig {
                         .anyRequest().authenticated())
                 .authenticationProvider(setupAuthenticationProvider())
                 .httpBasic(basic -> basic.securityContextRepository(new HttpSessionSecurityContextRepository()))
-                .logout(logout -> logout.logoutUrl("/v1/user"));
+                .logout(logout -> logout.logoutUrl("/v1/user/logout"));
         return http.build();
     }
 

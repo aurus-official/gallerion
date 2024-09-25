@@ -1,7 +1,12 @@
-import Navbar from "./components/Navbar.jsx";
+import { useState } from "react";
+import Register from "./components/Register.jsx";
+import Login from "./components/Login.jsx";
+import "./styles/App.css";
 
 function App() {
-    return <Navbar />;
+    const [isNotLoggedIn, setIsNotLoggedIn] = useState(false);
+
+    return <Login />;
 }
 
 export default App;

@@ -1,0 +1,124 @@
+.whole-page-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-container {
+    background-color: rgba(49, 45, 45, 0.3);
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+    height: 72%;
+    align-items: center;
+    border-top-left-radius: 2.5em;
+    border-bottom-left-radius: 2.5em;
+}
+
+.register-container > * {
+    background-color: transparent;
+}
+
+.register-image-container {
+    display: flex;
+    width: 30%;
+    height: 72%;
+    background-image: url("./../assets/homeImage.svg");
+    background-repeat: no-repeat;
+    background-position: left;
+    background-size: cover;
+    position: relative;
+}
+
+.logo {
+    align-self: start;
+    margin-top: 10%;
+    margin-left: 10%;
+}
+
+.title-container {
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+    letter-spacing: 0.02em;
+    font-weight: lighter;
+    margin-top: 25%;
+    margin-bottom: 15%;
+    align-self: flex-start;
+    position: relative;
+    left: -10%;
+}
+
+.register-title {
+    background-color: transparent;
+    color: whitesmoke;
+    font-family: "Jersey 25", san-serif;
+    font-size: 2.75rem;
+    line-height: 0.85em;
+}
+
+.center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.center-container > div > input,
+.center-container > button {
+    background-color: rgb(47, 47, 47);
+    outline: none;
+    border: none;
+    color: whitesmoke;
+    border-radius: 10em;
+}
+
+.center-container > div > input {
+    padding: 0.7em 0;
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 3.25em;
+    padding-right: 1em;
+}
+
+.center-container > .username-container,
+.center-container > .password-container,
+.center-container > .confirmpassw-container {
+    background-color: transparent;
+    width: 100%;
+    position: relative;
+    margin-bottom: 7.5%;
+}
+
+.center-container > button {
+    background-color: rgb(255, 56, 56);
+    border: none;
+    padding: 0.7em 2em;
+    font-family: "Jersey 25", san-serif;
+    cursor: pointer;
+}
+
+.username-container::before {
+    content: url("./../assets/username.png");
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%) scale(0.4);
+}
+
+.password-container::before {
+    content: url("./../assets/password.png");
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    transform: translateY(-50%) scale(0.4);
+}
+
+.confirmpassw-container::before {
+    content: url("./../assets/confirmpassword.png");
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    transform: translateY(-50%) scale(0.4);
+}
