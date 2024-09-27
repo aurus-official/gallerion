@@ -1,5 +1,5 @@
-import Logo from "../assets/logo.svg";
-import "../styles/Register.css";
+import Logo from "./../assets/logo.svg";
+import "./../styles/register.css";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 
@@ -47,47 +47,56 @@ function Register() {
     }
 
     return (
-        <div className="whole-page-container">
+        <div className="register-whole-page-container">
             <div className="register-container">
-                <img className="logo" src={Logo} alt="logo" />
-                <div className="center-container">
-                    <div className="title-container">
+                <img className="register-logo" src={Logo} alt="logo" />
+                <div className="register-center-container">
+                    <div className="register-title-container">
                         <h1 className="register-title">Create a</h1>
                         <h1 className="register-title">free account.</h1>
                     </div>
-                    <div className="username-container">
+                    <div className="register-username-container">
                         <input
                             value={form.username}
                             name="username"
-                            className="username"
+                            className="register-username"
                             type="text"
                             placeholder="Username"
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="password-container">
+                    <div className="register-password-container">
                         <input
                             value={form.password}
                             name="password"
-                            className="password"
+                            className="register-password"
                             type="password"
                             placeholder="Password"
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="confirmpassw-container">
+                    <div className="register-confirmpassw-container">
                         <input
                             value={form.confirmPassword}
                             name="confirmPassword"
-                            className="confirmpass"
+                            className="register-confirmpass"
                             type="password"
                             placeholder="Confirm Password"
                             onChange={handleChange}
                         />
                     </div>
-                    <button onClick={handleSubmit} type="button">
+                    <button
+                        className="register-button"
+                        onClick={handleSubmit}
+                        type="button"
+                    >
                         REGISTER
                     </button>
+                    <div className="register-account-container">
+                        <a href="#" className="register-account-title">
+                            ALREADY HAVE AN ACCOUNT?
+                        </a>
+                    </div>
                 </div>
             </div>
             <div className="register-image-container"></div>

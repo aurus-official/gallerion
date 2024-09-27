@@ -1,4 +1,4 @@
-.whole-page-container {
+.login-whole-page-container {
     width: 100%;
     height: 100vh;
     display: flex;
@@ -6,22 +6,22 @@
     align-items: center;
 }
 
-.register-container {
+.login-container {
     background-color: rgba(49, 45, 45, 0.3);
     display: flex;
     flex-direction: column;
     width: 35%;
     height: 72%;
     align-items: center;
-    border-top-left-radius: 2.5em;
-    border-bottom-left-radius: 2.5em;
+    border-top-right-radius: 2.5em;
+    border-bottom-right-radius: 2.5em;
 }
 
-.register-container > * {
+.login-container > * {
     background-color: transparent;
 }
 
-.register-image-container {
+.login-image-container {
     display: flex;
     width: 30%;
     height: 72%;
@@ -32,13 +32,13 @@
     position: relative;
 }
 
-.logo {
+.login-logo {
     align-self: start;
     margin-top: 10%;
     margin-left: 10%;
 }
 
-.title-container {
+.login-title-container {
     display: flex;
     flex-direction: column;
     background-color: transparent;
@@ -51,7 +51,7 @@
     left: -10%;
 }
 
-.register-title {
+.login-title {
     background-color: transparent;
     color: whitesmoke;
     font-family: "Jersey 25", san-serif;
@@ -59,14 +59,14 @@
     line-height: 0.85em;
 }
 
-.center-container {
+.login-center-container {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.center-container > div > input,
-.center-container > button {
+.login-center-container > div > input,
+.login-center-container > button {
     background-color: rgb(47, 47, 47);
     outline: none;
     border: none;
@@ -74,7 +74,7 @@
     border-radius: 10em;
 }
 
-.center-container > div > input {
+.login-center-container > div > input {
     padding: 0.7em 0;
     width: 100%;
     box-sizing: border-box;
@@ -82,16 +82,16 @@
     padding-right: 1em;
 }
 
-.center-container > .username-container,
-.center-container > .password-container,
-.center-container > .confirmpassw-container {
+.login-center-container > .login-username-container,
+.login-center-container > .login-password-container,
+.login-center-container > .login-confirmpassw-container {
     background-color: transparent;
     width: 100%;
     position: relative;
     margin-bottom: 7.5%;
 }
 
-.center-container > button {
+.login-center-container > button {
     background-color: rgb(255, 56, 56);
     border: none;
     padding: 0.7em 2em;
@@ -99,7 +99,11 @@
     cursor: pointer;
 }
 
-.username-container::before {
+.login-button {
+    margin-bottom: 15%;
+}
+
+.login-username-container::before {
     content: url("./../assets/username.png");
     position: absolute;
     top: 50%;
@@ -107,7 +111,7 @@
     transform: translateY(-50%) scale(0.4);
 }
 
-.password-container::before {
+.login-password-container::before {
     content: url("./../assets/password.png");
     position: absolute;
     top: 50%;
@@ -115,10 +119,21 @@
     transform: translateY(-50%) scale(0.4);
 }
 
-.confirmpassw-container::before {
+.login-confirmpassw-container::before {
     content: url("./../assets/confirmpassword.png");
     position: absolute;
     top: 50%;
     left: 0%;
     transform: translateY(-50%) scale(0.4);
+}
+
+.login-noaccount-container,
+.login-noaccount-container > * {
+    background-color: transparent;
+}
+
+.login-noaccount-title,
+.login-noaccount-link {
+    font-family: "Jersey 25", sans-serif;
+    color: whitesmoke;
 }

@@ -1,17 +1,21 @@
-import Logo from "../assets/logo.svg";
-import "../styles/Login.css";
+import { useQuery } from "@tanstack/react-query";
+import Logo from "./../assets/logo.svg";
+import "./../styles/login.css";
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
 
-async function handleRegister(formData) {
+async function handleLogin({ queryKey }) {
+    const [_key, { form }] = queryKey;
     try {
-        const response = await fetch("http://127.0.0.1:8080/v1/user", {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            method: "POST",
-            body: JSON.stringify(formData),
-        });
+        const response = await fetch(
+            "http://localhost:8080/v1/images/".concat(form.username),
+            {
+                headers: {
+                    Authorization: `Basic ${btoa(`${form.username}:${form.password}`)}`,
+                },
+                credentials: "include",
+            }
+        );
+        console.log(response);
         const data = await response.json();
         console.log(data);
         return data;
@@ -26,6 +30,12 @@ function Login() {
         password: "",
     });
 
+    const { isPending, error, data, refetch } = useQuery({
+        queryKey: ["images", { form }],
+        queryFn: handleLogin,
+        enabled: false,
+    });
+
     function handleChange(event) {
         setFormData((prevState) => ({
             ...prevState,
@@ -34,6 +44,7 @@ function Login() {
     }
 
     function handleSubmit(event) {
+        refetch();
         setFormData({
             username: "",
             password: "",
@@ -41,40 +52,44 @@ function Login() {
     }
 
     return (
-        <div className="whole-page-container">
+        <div className="login-whole-page-container">
             <div className="login-image-container"></div>
             <div className="login-container">
-                <img className="logo" src={Logo} alt="logo" />
-                <div className="center-container">
-                    <div className="title-container">
+                <img className="login-logo" src={Logo} alt="logo" />
+                <div className="login-center-container">
+                    <div className="login-title-container">
                         <h1 className="login-title">Access your</h1>
                         <h1 className="login-title">free account.</h1>
                     </div>
-                    <div className="username-container">
+                    <div className="login-username-container">
                         <input
                             value={form.username}
                             name="username"
-                            className="username"
+                            className="login-username"
                             type="text"
                             placeholder="Username"
                             onChange={handleChange}
                         />
                     </div>
-                    <div className="password-container">
+                    <div className="login-password-container">
                         <input
                             value={form.password}
                             name="password"
-                            className="password"
+                            className="login-password"
                             type="password"
                             placeholder="Password"
                             onChange={handleChange}
                         />
                     </div>
-                    <button onClick="#" type="button">
+                    <button
+                        className="login-button"
+                        onClick={handleSubmit}
+                        type="button"
+                    >
                         LOGIN
                     </button>
-                    <div className="noaccount-container">
-                        <a href="#" className="noaccount-title">
+                    <div className="login-noaccount-container">
+                        <a href="#" className="login-noaccount-title">
                             DON'T HAVE AN ACCOUNT YET?
                         </a>
                     </div>
