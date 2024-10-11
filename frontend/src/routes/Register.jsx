@@ -2,6 +2,7 @@ import Logo from "./../assets/logo.svg";
 import "./../styles/register.css";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 
 async function handleRegister(formData) {
     try {
@@ -93,9 +94,9 @@ function Register() {
                         REGISTER
                     </button>
                     <div className="register-account-container">
-                        <a href="#" className="register-account-title">
+                        <Link to={".."} className="register-account-title">
                             ALREADY HAVE AN ACCOUNT?
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -1,40 +1,56 @@
 import { useQuery } from "@tanstack/react-query";
 import Logo from "./../assets/logo.svg";
 import "./../styles/login.css";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 async function handleLogin({ queryKey }) {
-    const [_key, { form }] = queryKey;
+    const [_key, { formData }] = queryKey;
     try {
         const response = await fetch(
-            "http://localhost:8080/v1/images/".concat(form.username),
+            "http://localhost:8080/v1/images/".concat(
+                formData.current.username
+            ),
             {
                 headers: {
-                    Authorization: `Basic ${btoa(`${form.username}:${form.password}`)}`,
+                    Authorization: `Basic ${btoa(`${formData.current.username}:${formData.current.password}`)}`,
                 },
                 credentials: "include",
             }
         );
-        console.log(response);
-        const data = await response.json();
-        console.log(data);
-        return data;
+
+        if (!response.ok) {
+            console.error(response);
+            return undefined;
+        }
+
+        return await response.json();
     } catch (exception) {
         console.error(exception);
     }
 }
 
-function Login() {
+function Login({ printImages }) {
     const [form, setFormData] = useState({
         username: "",
         password: "",
     });
 
-    const { isPending, error, data, refetch } = useQuery({
-        queryKey: ["images", { form }],
-        queryFn: handleLogin,
-        enabled: false,
+    const [enabled, setEnabled] = useState(false);
+
+    const formData = useRef({
+        username: "",
+        password: "",
     });
+
+    const { fetchStatus, isError, data, refetch, status, error } = useQuery({
+        queryKey: ["images", { formData }],
+        queryFn: handleLogin,
+        enabled: enabled,
+    });
+
+    console.log(data);
+    console.log(printImages());
 
     function handleChange(event) {
         setFormData((prevState) => ({
@@ -44,7 +60,14 @@ function Login() {
     }
 
     function handleSubmit(event) {
-        refetch();
+        event.preventDefault();
+        if (form.username == "" || form.password == "") {
+            console.error("Missing data.");
+            return;
+        }
+
+        formData.current = { username: form.username, password: form.password };
+        setEnabled(true);
         setFormData({
             username: "",
             password: "",
@@ -65,9 +88,15 @@ function Login() {
                         <input
                             value={form.username}
                             name="username"
-                            className="login-username"
+                            className={
+                                isError
+                                    ? "error-login-username"
+                                    : "login-username"
+                            }
                             type="text"
-                            placeholder="Username"
+                            placeholder={
+                                isError ? "Invalid Username!" : "Username"
+                            }
                             onChange={handleChange}
                         />
                     </div>
@@ -75,23 +104,40 @@ function Login() {
                         <input
                             value={form.password}
                             name="password"
-                            className="login-password"
+                            className={
+                                isError
+                                    ? "error-login-password"
+                                    : "login-password"
+                            }
                             type="password"
-                            placeholder="Password"
+                            placeholder={
+                                isError ? "Invalid Password!" : "Password"
+                            }
                             onChange={handleChange}
                         />
                     </div>
                     <button
-                        className="login-button"
+                        className={
+                            fetchStatus !== "fetching"
+                                ? "login-button"
+                                : "loading-button"
+                        }
                         onClick={handleSubmit}
                         type="button"
                     >
-                        LOGIN
+                        {fetchStatus !== "fetching" ? (
+                            "LOGIN"
+                        ) : (
+                            <i className="fa fa-circle-o-notch fa-spin"></i>
+                        )}
                     </button>
                     <div className="login-noaccount-container">
-                        <a href="#" className="login-noaccount-title">
+                        <Link
+                            to={"./register"}
+                            className="login-noaccount-title"
+                        >
                             DON'T HAVE AN ACCOUNT YET?
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

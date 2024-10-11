@@ -1,7 +1,9 @@
 package com.ar.gallerion.image;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,11 +34,13 @@ class ImageController {
     }
 
     @GetMapping(path = "/{username}")
-    ResponseEntity<List<ImageModel>> getImageOnUsername(@PathVariable(name = "username") String username,
+    ResponseEntity<Map<String, List<ImageModel>>> getImageOnUsername(@PathVariable(name = "username") String username,
             Authentication authentication, HttpServletRequest httpServletRequest) {
         List<ImageModel> files = imageService.getAllImages(username, authentication.getName());
-        System.out.println(httpServletRequest.getCookies());
-        return new ResponseEntity<List<ImageModel>>(files, HttpStatus.OK);
+        System.out.println(httpServletRequest.getSession());
+        Map<String, List<ImageModel>> map = new HashMap<>();
+        map.put("images", files);
+        return new ResponseEntity<Map<String, List<ImageModel>>>(map, HttpStatus.OK);
     }
 
     @PostMapping(path = "/{username}")

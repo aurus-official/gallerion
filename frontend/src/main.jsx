@@ -1,11 +1,8 @@
 import { createRoot } from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-    createBrowserRouter,
-    RouterProvider,
-    Navigate,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./routes/Login.jsx";
+import Main from "./routes/Main.jsx";
 import Register from "./routes/Register.jsx";
 import "./styles/main.css";
 
@@ -15,11 +12,7 @@ const queryClient = new QueryClient();
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Navigate to="/login" />,
-    },
-    {
-        path: "/login",
-        element: <Login />,
+        element: <Main />,
     },
     {
         path: "/register",

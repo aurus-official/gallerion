@@ -48,7 +48,7 @@
     margin-bottom: 15%;
     align-self: flex-start;
     position: relative;
-    left: -10%;
+    /* left: -10%; */
 }
 
 .login-title {
@@ -103,12 +103,30 @@
     margin-bottom: 15%;
 }
 
+.loading-button {
+    background-color: rgb(255, 56, 56);
+    padding: 0.7em 2em;
+    border: none;
+    margin-bottom: 15%;
+}
+
+.fa {
+    background: none;
+    color: black;
+}
+
 .login-username-container::before {
     content: url("./../assets/username.png");
     position: absolute;
     top: 50%;
     left: 0;
     transform: translateY(-50%) scale(0.4);
+}
+
+.error-login-username::placeholder,
+.error-login-password::placeholder {
+    color: rgba(255, 56, 56, 1);
+    /* color: rgba(47, 47, 47, 1); */
 }
 
 .login-password-container::before {
